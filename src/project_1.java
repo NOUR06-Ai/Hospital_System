@@ -55,7 +55,6 @@ import javax.swing.table.DefaultTableModel;
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jLabel22 = new javax.swing.JLabel();
 
         jLabel8.setText("jLabel8");
 
@@ -194,10 +193,6 @@ import javax.swing.table.DefaultTableModel;
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 380, -1, -1));
-
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hatsApp 3Image 2025-11-29 at 12.32.28_4741818f - Copy (2).jpg"))); // NOI18N
-        jLabel22.setText("jLabel22");
-        getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -338,7 +333,6 @@ typeward="";
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
