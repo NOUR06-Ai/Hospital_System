@@ -1,4 +1,3 @@
-package Project;
 
 import javax.swing.JOptionPane;
 
@@ -142,7 +141,7 @@ public class Log extends javax.swing.JFrame {
         if(User){
             if(Pass){
                 setVisible(false);
-                new home().setVisible(true);       
+//                new home().setVisible(true);       
                 return;
             }
         }
