@@ -1,5 +1,5 @@
 
- import Project.ConnectionProvider;
+import Project.ConnectionProvider;
 import java.sql.Connection;
 
 import java.sql.*;
@@ -9,16 +9,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
- public class project_1 extends javax.swing.JFrame {
+public class project_1 extends javax.swing.JFrame {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(project_1.class.getName());
-     public project_1() {
+
+    public project_1() {
         initComponents();
         this.setLocationRelativeTo(null);
         jLabel2.setVisible(false);
         jLabel7.setVisible(false);
         jComboBox1.setVisible(false);
         jButton1.setFont(null);
+        this.setTitle("🩺📋Diagnosis");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -111,7 +115,11 @@ import javax.swing.table.DefaultTableModel;
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, -1, -1));
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField1.setText(" ");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 102, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -202,114 +210,134 @@ import javax.swing.table.DefaultTableModel;
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        setVisible(false);
+
+        this.setVisible(false);
+        new home().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-// TODO add your handling code here:
-        if(jCheckBox1.isSelected()){
+
+        if (jCheckBox1.isSelected()) {
             jLabel7.setVisible(true);
             jComboBox1.setVisible(true);
-        }
-        else{
+        } else {
             jLabel7.setVisible(false);
-            jComboBox1.setVisible(false);  
+            jComboBox1.setVisible(false);
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
- String PatientID=jTextField1.getText();
-    try {
-    Connection con = ConnectionProvider.getCon();
-    Statement st = con.createStatement();
-    ResultSet rs = st.executeQuery("SELECT * FROM patients WHERE ID = " + PatientID );
-    if (rs.next()) {
-        jLabel2.setVisible(true);
-        jLabel2.setForeground(new java.awt.Color(0, 128, 0)); 
-        jLabel2.setText("Patient Found ");
-        jTextField2.setText(rs.getString("Symptoms")); 
-        jTextField3.setText(rs.getString("Diagnosis"));
-        jTextField4.setText(rs.getString("Medicines"));
-        String ward = rs.getString("Ward"); 
-        if (ward != null && !ward.isEmpty()) {
-            jCheckBox1.setSelected(true);
-            jComboBox1.setVisible(true);
-            jLabel7.setVisible(true);
-            jComboBox1.setSelectedItem(ward);
-        } else {
-            jCheckBox1.setSelected(false);
-            jComboBox1.setVisible(false);
-            jLabel7.setVisible(false);
-        }
-    } else {
-        jLabel2.setVisible(true);
-        jLabel2.setForeground(java.awt.Color.RED);
-        jLabel2.setText("Patient ID does not exist ");
-        jTextField1.setEditable(true);
-        jTextField2.setText("");
-        jTextField3.setText("");
-        jTextField4.setText("");
-        jCheckBox1.setSelected(false);
-        jComboBox1.setVisible(false);
-       jLabel7.setVisible(false);
-    }
 
-} catch (Exception e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(null, "Connection Error ❌");
-}
+        String PatientID = jTextField1.getText();
+
+        if (!PatientID.matches("\\d+")) {
+
+            JOptionPane.showMessageDialog(null, "Please enter number!");
+            return;
+        }
+
+        try {
+            Connection con = DB.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM Patients WHERE ID = " + PatientID);
+            if (rs.next()) {
+                jLabel2.setVisible(true);
+                jLabel2.setForeground(new java.awt.Color(0, 128, 0));
+                jLabel2.setText("Patient Found ");
+                jTextField2.setText(rs.getString("Symptoms"));
+                jTextField3.setText(rs.getString("Diagnosis"));
+                jTextField4.setText(rs.getString("Medicines"));
+                String ward = rs.getString("Ward");
+                if (ward != null && !ward.isEmpty()) {
+                    jCheckBox1.setSelected(true);
+                    jComboBox1.setVisible(true);
+                    jLabel7.setVisible(true);
+                    jComboBox1.setSelectedItem(ward);
+                } else {
+                    jCheckBox1.setSelected(false);
+                    jComboBox1.setVisible(false);
+                    jLabel7.setVisible(false);
+                }
+            } else {
+                jLabel2.setVisible(true);
+                jLabel2.setForeground(java.awt.Color.RED);
+                jLabel2.setText("Patient ID does not exist ");
+                jTextField1.setEditable(true);
+                jTextField2.setText("");
+                jTextField3.setText("");
+                jTextField4.setText("");
+                jCheckBox1.setSelected(false);
+                jComboBox1.setVisible(false);
+                jLabel7.setVisible(false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Connection Error ❌");
+//    JOptionPane.showMessageDialog(null, "Connection Error: " + e.getMessage());
+
+
+            
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- 
-String patientID_t=jTextField1.getText().trim();
-String symptom=jTextField2.getText().trim();
-String diagnosis=jTextField3.getText().trim();
-String medicines=jTextField4.getText().trim();
-if(patientID_t.isEmpty()||symptom.isEmpty()||diagnosis.isEmpty()||medicines.isEmpty()){
-   JOptionPane.showMessageDialog(null,"please enter all patient details!");
-   return;
-}
-int patientID=Integer.parseInt(patientID_t);
-String wardReq;
-String typeward;
-if(jCheckBox1.isSelected()){
-wardReq="YES";
-typeward=(String)jComboBox1.getSelectedItem();
-}
-else{
-wardReq="NO";
-typeward="";
-}
- try {
-    Connection con = ConnectionProvider.getCon();
-    String sql = "update patients SET Symptoms=?,Diagnosis=?,Medicines=?,Ward=? WHERE ID=?";
-    PreparedStatement ps = con.prepareStatement(sql);
-    ps.setString(1, symptom);         
-    ps.setString(2, diagnosis);
-    ps.setString(3, medicines);
-    ps.setString(4, typeward);
-    ps.setInt(5, patientID);
-    ps.executeUpdate();
-    JOptionPane.showMessageDialog(null, "Successfully Updated");
- 
-} catch(Exception e) {
-    JOptionPane.showMessageDialog(this, e);
-}
+
+        String patientID_t = jTextField1.getText().trim();
+        String symptom = jTextField2.getText().trim();
+        String diagnosis = jTextField3.getText().trim();
+        String medicines = jTextField4.getText().trim();
+        
+        if(diagnosis.matches(".*\\d.*")){
+            JOptionPane.showMessageDialog(null, "Oops! the diagnosis should contian letters only.Try again💚");
+            return;
+        }
+        
+        if (patientID_t.isEmpty() || symptom.isEmpty() || diagnosis.isEmpty() || medicines.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "please enter all patient details!");
+            return;
+        }
+        int patientID = Integer.parseInt(patientID_t);
+        String wardReq;
+        String typeward;
+        if (jCheckBox1.isSelected()) {
+            wardReq = "YES";
+            typeward = (String) jComboBox1.getSelectedItem();
+        } else {
+            wardReq = "NO";
+            typeward = "";
+        }
+        try {
+            Connection con = DB.getConnection();
+            String sql = "update patients SET Symptoms=?,Diagnosis=?,Medicines=?,Ward=? WHERE ID=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, symptom);
+            ps.setString(2, diagnosis);
+            ps.setString(3, medicines);
+            ps.setString(4, typeward);
+            ps.setInt(5, patientID);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Successfully Updated");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-      
+
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-   
+
     }//GEN-LAST:event_jTextField2ActionPerformed
- 
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     public static void main(String args[]) {
-    
+
         java.awt.EventQueue.invokeLater(() -> new project_1().setVisible(true));
     }
 
